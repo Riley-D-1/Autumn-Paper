@@ -43,7 +43,7 @@
         let leaf_y_pos = leaf["y_val"]
         let leaf_x_pos_start = leaf["x_pos_start"]
         let leaf_creation_time = leaf["creation_time"]
-        caculated_y_pos = leaf_y_pos+ 25
+        caculated_y_pos = leaf_y_pos+ 1
         caculated_x_pos = leaf_x_pos
         let random_num = Math.random() 
         // need to code breeze chances later (not important right now only if time)
@@ -77,7 +77,11 @@
     function main_function(){
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         draw_tree()
-        create_leaf()
+        let temp_rand_num = Math.random()
+        if (temp_rand_num > 0.95){
+            create_leaf()
+        }
+        
         index = 0
         leaves_pos.forEach((leaf, index) => {
             let leaf_num = index
@@ -93,7 +97,7 @@
     // What triggers the main seequence.
     setInterval(() => {
             main_function()
-    }, 101)
+    }, 11)
     // Check for click functionality to trigger more leaves
     // Maybe not the click for now 
 </script>
