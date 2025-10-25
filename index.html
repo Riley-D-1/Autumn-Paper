@@ -24,16 +24,24 @@
     //  and I just need to finish the 6 hours of this week on a simple project who's scale can be reduced or expanded
     function create_leaf(){
         let x_pos_start = Math.floor(Math.random()*1920)
+        // 450- 1440 is the bounds
         if (x_pos_start) {
             //pass
         } else {
             //Math.floor(Math.random()*10)
         }
+        let flipped
+        if (Math.random() < 0.5){
+            flipped_ = true
+        }else{
+            flipped_ = false
+        }
         start_vals = {
             "y_val": -50,
             "x_val": x_pos_start,
             "x_pos_start": x_pos_start,
-            "creation_time": Date.now()
+            "creation_time": Date.now(),
+            "flipped_": flipped_
         }
         leaves_pos.push(start_vals);
     }
@@ -45,17 +53,24 @@
         let leaf_creation_time = leaf["creation_time"]
         caculated_y_pos = leaf_y_pos+ 1
         caculated_x_pos = leaf_x_pos
+        let flipped = leaf["flipped_"]
         let random_num = Math.random() 
-        // need to code breeze chances later (not important right now only if time)
+        // need to code breeze chances
         // Give it a chance of major wind drift
-        let flipped = false
+        if (random_num < 0.9){
+            //filler
+        }
         leaves_pos[leaf_num]["x_val"] = caculated_x_pos;
         leaves_pos[leaf_num]["y_val"] = caculated_y_pos;
+        leaves_pos[leaf_num]["flipped_"] = flipped;
         return [flipped,caculated_y_pos,caculated_x_pos]
     }
 
     function draw_leaf(flipped,y_pos,x_pos){
-        const orange_1 = "#ff4f17" //orange shade 1
+        //const orange_1 = "#ff4f17" //orange shade 1
+        //const orange_1 = '#E64A14'
+        const orange_1 = '#F44E1C'; // This the one for now but still deciding
+        //const orange_1 = '#F4471A'
         ctx.fillStyle = orange_1
         if (flipped === false){
             ctx.fillRect(x_pos,(y_pos+2),10,10)
@@ -78,7 +93,7 @@
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         draw_tree()
         let temp_rand_num = Math.random()
-        if (temp_rand_num > 0.95){
+        if (temp_rand_num > 0.975){
             create_leaf()
         }
         
@@ -98,6 +113,13 @@
     setInterval(() => {
             main_function()
     }, 11)
+    document.addEventListener("click", function(event) {
+        // debuging statement
+        console.log(`X = ${event.clientX} ,  Y = ${event.clientY}`);
+        for (let i = 1; i < 4; i++) {
+            create_leaf();
+        }
+    });
     // Check for click functionality to trigger more leaves
-    // Maybe not the click for now 
+    // Maybe not the click for now
 </script>
