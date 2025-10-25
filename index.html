@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+    <meta name = "viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallpaper</title>
+    <link rel = "stylesheet" href = "style.css">
+	<link href="" rel="stylesheet">
+</head>
+<body>
+    <canvas id = "wallpaper_window" width = "window.innerWidth" height = "window.innerHeight"></canvas>
+</body>
+<script>
+    const canvas = document.getElementById("wallpaper_window")
+    const ctx = canvas.getContext("2d")
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
+    console.log(Math.floor(Math.random()*10))
+    // random number (now need to make it correlate with starting postion)
+    function draw_pixel(y_pos,x_pos,colour,width,height){
+        ctx.fillStyle = colour
+        ctx.fillRect(ypos,x_pos, width, height);
+    }
+    // Note that yes it would be easier doing pixel art externally and importing
+    //  but that doesn't count for time and this is an intreasting challenge and I just need to finish the 6 hours of this week on a simple project who's scale can be reduced or expanded
+    function draw_leaf(){
+        //if (Math.random() < 5){
+            // Leaf type 2
+            // Draw leaf flipped and falling down 
+        //}else{
+            // Leaf type 2 
+        //}
+    }
+    function draw_tree(){
+        // Credit to those in inpo folder
+        const bg_image = new Image()
+        bg_image.src = 'assets/wallpaper_bg.png'
+        bg_image.onload = function() {
+            ctx.drawImage(bg_image, 0, 0, canvas.width, canvas.height)
+        }
+    }
+    function main_function(){
+        ctx.fillStyle = '#eccc8a'
+    }
+    window.onload = function(){
+        draw_tree()
+    }
+    draw_tree()
+</script>
