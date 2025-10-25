@@ -15,6 +15,7 @@
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
     console.log(Math.floor(Math.random()*10))
+    // Width= 911 (1080p width)
     // random number (now need to make it correlate with starting postion)
     function draw_pixel(y_pos,x_pos,colour,width,height){
         ctx.fillStyle = colour
@@ -44,5 +45,5 @@
     window.onload = function(){
         draw_tree()
     }
-    draw_tree()
+    //draw_tree()
 </script>
