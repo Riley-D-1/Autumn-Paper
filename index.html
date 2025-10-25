@@ -23,22 +23,37 @@
     //  but that doesn't count for time and this is an intreasting challenge
     //  and I just need to finish the 6 hours of this week on a simple project who's scale can be reduced or expanded
     function create_leaf(){
-        let x_pos_start = Math.floor(Math.random()*10)
-        leaves.push{"x_start":"","y_val":"","x_val":0};
+        let x_pos_start = Math.floor(Math.random()*1920)
+        if (x_pos_start) {
+            //pass
+        } else {
+            //Math.floor(Math.random()*10)
+        }
+        start_vals = {
+            "y_val": -50,
+            "x_val": x_pos_start,
+            "x_pos_start": x_pos_start,
+            "creation_time": Date.now()
+        }
+        leaves_pos.push(start_vals);
     }
 
-    function leaf_drift(x_pos_start,time){
-        // temp testing values
-        caculated_x_pos = 500
-        caculated_y_pos = 250
+    function leaf_drift(leaf,leaf_num){
+        let leaf_x_pos = leaf["x_val"]
+        let leaf_y_pos = leaf["y_val"]
+        let leaf_x_pos_start = leaf["x_pos_start"]
+        let leaf_creation_time = leaf["creation_time"]
+        caculated_y_pos = leaf_y_pos+ 25
+        caculated_x_pos = leaf_x_pos
         let random_num = Math.random() 
-        console.log(random_num)
         // need to code breeze chances later (not important right now only if time)
         // Give it a chance of major wind drift
-        flipped = false
+        let flipped = false
+        leaves_pos[leaf_num]["x_val"] = caculated_x_pos;
+        leaves_pos[leaf_num]["y_val"] = caculated_y_pos;
         return [flipped,caculated_y_pos,caculated_x_pos]
     }
-  
+
     function draw_leaf(flipped,y_pos,x_pos){
         const orange_1 = "#ff4f17" //orange shade 1
         ctx.fillStyle = orange_1
@@ -58,37 +73,27 @@
         // Credit to those in inspo folder but my own pixel art :D
         ctx.drawImage(bg_image, 0, 0, canvas.width, canvas.height)
     }
+
     function main_function(){
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         draw_tree()
-        let flipped
-        let x_pos
-        let y_pos
-        leaves_pos.forEach(leaf => {
-            let returned_vals= leaf_drift()
-            flipped = returned_vals[0]
-            x_pos = returned_vals[1]
-            y_pos = returned_vals[2]
+        create_leaf()
+        index = 0
+        leaves_pos.forEach((leaf, index) => {
+            let leaf_num = index
+            let returned_vals= leaf_drift(leaf,leaf_num)
+            let flipped = returned_vals[0]
+            let x_pos = returned_vals[1]
+            let y_pos = returned_vals[2]
+            index+=1
+            draw_leaf(flipped,x_pos,y_pos)
         });
-        draw_leaf(flipped,x_pos,y_pos)
     }
 
-    function temp_tester(){
-        let flipped
-        let x_pos
-        let y_pos
-        leaves_pos.forEach(leaf => {
-            let returned_vals= leaf_drift()
-            flipped = returned_vals[0]
-            x_pos = returned_vals[1]
-            y_pos = returned_vals[2]
-        });
-        draw_leaf(flipped,x_pos,y_pos)
-    }
     // What triggers the main seequence.
     setInterval(() => {
             main_function()
-    }, 1001)
-        // Check for click functionality to trigger more leaves
-        // Maybe not the click for now 
+    }, 101)
+    // Check for click functionality to trigger more leaves
+    // Maybe not the click for now 
 </script>
