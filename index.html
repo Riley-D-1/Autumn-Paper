@@ -24,11 +24,18 @@
     //  and I just need to finish the 6 hours of this week on a simple project who's scale can be reduced or expanded
     function create_leaf(last_leaf){
         // Need to make this work with other values 
-        // 450- 1440 is the bounds of x (turn to %)
+        // 450 -  1440 is the bounds of x (move all vals in here to y = 525 ) (turn to %)
         // Need to ensure that the caculated breezes dont cross here before y >= 525
         let x_pos_start = Math.floor(Math.random()*1920)
-        while (x_pos_start < 450 || x_pos_start > 1440){
-           x_pos_start = Math.floor(Math.random()*1920)
+        // FORGOT ABOUT WHILE LOOPS
+        //while (x_pos_start > 450 || x_pos_start < 1440){
+        //}
+        // WORKING just maybe modify the values so there is less emptiness?
+        let y_val_start;
+        if (x_pos_start < 450 || x_pos_start > 1440) {
+            y_val_start = -50;
+        } else {
+            y_val_start = 525;
         }
         let flipped_
         if (Math.random() < 0.5){
@@ -36,41 +43,63 @@
         }else{
             flipped_ = false
         }
+        random_idk = Math.random()
+        if (random_idk < 0.8){
+            drift_direction_start = "right"
+        }else{
+            drift_direction_start = "down"
+        }
         start_vals = {
-            "y_val": -50,
+            "y_val": y_val_start,
             "x_val": x_pos_start,
             "x_pos_start": x_pos_start,
             "creation_time": Date.now(),
-            "flipped_": flipped_
+            "flipped_": flipped_,
+            "drift_dir": drift_direction_start
         }
         leaves_pos.push(start_vals);
     }
-
     function leaf_drift(leaf,leaf_num){
         let leaf_x_pos = leaf["x_val"]
         let leaf_y_pos = leaf["y_val"]
         let leaf_x_pos_start = leaf["x_pos_start"]
         let leaf_creation_time = leaf["creation_time"]
-        let caculated_y_pos = leaf_y_pos+ 1
+        let caculated_y_pos = leaf_y_pos + 1
         let caculated_x_pos = leaf_x_pos
         let flipped = leaf["flipped_"] 
+        let leaf_drift = leaf["drift_dir"]
         // Need to code breeze chances
         // Give it a chance of major wind drift
-        let random_num = Math.random()
-        caculated_y_pos += 50
-        if (random_num < 0.9){
-            //caculated_x_pos+=5;
+        // Need to improve chances
+        if (leaf_drift === "right"){
+            let random_num = Math.random()
+            if (random_num > 0.999){
+                leaf["drift_dir"]  = "down"
+            }
         }
-        //else if(random_num<0.99){
-            //if (flipped === false){
-                //flipped = true
-            //}else{
-               //flipped = false
-            //}
-        //}
+        // YES THIS IS A HORRENDOUS IF BLOCK BUT IDK MAN it works
+        // Drift if true 
+        
+        if (caculated_y_pos < 525 && caculated_y_pos < 500){
+            if (caculated_x_pos > 450 && caculated_x_pos < 1450){
+                //pass because of tree
+            }else{
+                if (leaf_drift === "right"){
+                    caculated_x_pos +=1            
+                }
+            }
+        }else if (caculated_y_pos < 300){
+            if (caculated_x_pos > 450 && caculated_x_pos < 1450){
+                if (leaf_drift === "right"){
+                    caculated_x_pos +=1            
+                }   
+            }
+        }
+        // WHYYYY
+        // Got AI to build me a function and its like the same but it looks nice? 
         leaf["x_val"] = caculated_x_pos;
         leaf["y_val"] = caculated_y_pos;
-        leaf["flipped_"] = flipped;
+        leaf["flipped"] = flipped
         return [flipped,caculated_y_pos,caculated_x_pos]
     }
 
@@ -81,7 +110,7 @@
             ctx.fillRect(x_pos,(y_pos+2),10,10)
             ctx.fillRect((x_pos+5),(y_pos+8),10,10)
             ctx.fillRect((x_pos+5),(y_pos+15),15,5)
-                
+        
         }else{
             ctx.fillRect(x_pos,(y_pos+2),10,10)
             ctx.fillRect((x_pos-5),(y_pos+8),10,10)
@@ -102,12 +131,11 @@
             create_leaf()
             // Maybe ensure no overlap somehow?
         }
-
         index = 0
         leaves_pos.forEach((leaf, index) => {
             let leaf_num = index
             // to ensure leaves are deleted
-            if (leaf["y_val"] < (1.05 * canvas.height)){
+            if (leaf["y_val"] < (-1.05 * canvas.height)){
                 leaves_pos.splice(index, 1);
             }
             let returned_vals= leaf_drift(leaf,leaf_num)
@@ -118,7 +146,7 @@
             draw_leaf(flipped,x_pos,y_pos)
         });
     }
-    // What triggers the main seequence.
+    // What triggers the main seequence
     setInterval(() => {
             main_function()
     }, 11)
