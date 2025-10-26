@@ -18,12 +18,12 @@
     let leaves_pos = []
     // Width= 911 (1080p width), current img scaling now good :D but leaving here for debugging
     function create_leaf(last_leaf){
-        let x_pos_start = Math.floor(Math.random()*1920)
+        let x_pos_start = Math.floor(Math.random()*canvas.width)
         let y_val_start;
-        if (x_pos_start < 450 || x_pos_start > 1440) {
-            y_val_start = -50;
+        if (x_pos_start < canvas.width * 0.234 || x_pos_start > canvas.width * 0.755) {
+            y_val_start = -canvas.height * 0.055;
         } else {
-            y_val_start = 525;
+            y_val_start = canvas.height * 0.576;
         }
         let flipped_
         if (Math.random() < 0.5){
@@ -78,23 +78,22 @@
         // WE DONT TOUCH IT BECUASE IT WORKS :D
         // It just checks if its hitting the tree or not and then does the drifting caculations
 
-        if (caculated_y_pos < 525) {
-            if (caculated_x_pos > 440 && caculated_x_pos < 1450) {
+        if (caculated_y_pos < canvas.height * 0.576) {
+            if (caculated_x_pos > canvas.width * 0.231 && caculated_x_pos < canvas.width * 0.755) {
             } else {
                 if (leaf["drift_dir"] === "right") {
-                    caculated_x_pos += 0.5;
+                    caculated_x_pos += 0.5; // Light drift
                 }else if (leaf["drift_dir" === "right_str"])
-                    caculated_x_pos += 2;
+                    caculated_x_pos += 2; // severe drift
             }
-        } else {
+        }else { // The handling for standard 
             if (leaf["drift_dir"] === "right") {
-                caculated_x_pos += 0.5;
+                caculated_x_pos += 0.5; //Light drift
             }else if (leaf["drift_dir" === "right_str"])
-                    caculated_x_pos += 2;
+                    caculated_x_pos += 2; // severe drift
         }
         leaf["x_val"] = caculated_x_pos;
         leaf["y_val"] = caculated_y_pos;
-        leaf["flipped"] = flipped
         return [flipped,caculated_y_pos,caculated_x_pos]
     }
     // Note that yes it would be easier doing pixel art externally and importing them for the leaves
